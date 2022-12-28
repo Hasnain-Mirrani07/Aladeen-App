@@ -13,10 +13,15 @@ class SplashView extends GetView<SplashController> {
         title: const Text('SplashView'),
         centerTitle: true,
       ),
-      body: Center(
-        child: Text(
-          'SplashView is working',
-          style: TextStyle(fontSize: 20),
+      body: Obx(
+        () => Opacity(
+          opacity: controller.opacity.value,
+          child: Center(
+            child: Text(
+              'SPlash is working',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
         ),
       ),
     );
