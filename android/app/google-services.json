@@ -8,36 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:479235368324:android:db6d85337bb1e5e07429d1",
-        "android_client_info": {
-          "package_name": "com.example.aladeen"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "479235368324-0558cjv2akvbahdvuil8hb4qo21vp60l.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD6zls-7oXS1rEUZ2l5QnC4HTK5KjLMFOA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "479235368324-0558cjv2akvbahdvuil8hb4qo21vp60l.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:479235368324:android:7f1885526af5bab87429d1",
+        "mobilesdk_app_id": "1:479235368324:android:2b697b9e8b77803f7429d1",
         "android_client_info": {
           "package_name": "com.example.botim_app"
         }
