@@ -14,6 +14,7 @@ void main() async {
     ScreenUtilInit(
       designSize: const Size(375, 812),
       builder: (context, child) => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "Application",
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,

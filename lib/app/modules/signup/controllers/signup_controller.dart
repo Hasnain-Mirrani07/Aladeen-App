@@ -1,8 +1,13 @@
 import 'package:botim_app/app/routes/app_pages.dart';
 import 'package:botim_app/shared/widgets/custome_snackbar.dart';
+import 'package:botim_app/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class SignupController extends GetxController {
   //TODO: Implement SignupController
@@ -13,6 +18,21 @@ class SignupController extends GetxController {
   bool isLoading = false;
   final count = 0.obs;
 
+  //signUp
+  final phoneNoController = TextEditingController();
+  bool isHideText = false;
+  String initialCountry = 'SA';
+  PhoneNumber number = PhoneNumber(isoCode: 'AE');
+  final requiredValidator = RequiredValidator(errorText: 'Required Field');
+  final passwordValidator = MultiValidator([
+    RequiredValidator(errorText: 'Required Field'),
+    MaxLengthValidator(20, errorText: 'Maximum password limit'),
+    MinLengthValidator(8, errorText: 'Minimum password limit'),
+    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+        errorText: 'Please use special Chracter')
+  ]);
+  var outlineInputBorder =
+      OutlineInputBorder(borderSide: BorderSide(width: 1.w, color: greyColor));
   @override
   void onInit() {
     super.onInit();
