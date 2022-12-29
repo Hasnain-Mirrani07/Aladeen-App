@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -6,28 +8,49 @@ import '../../../routes/app_pages.dart';
 
 class SplashController extends GetxController with GetTickerProviderStateMixin {
   //TODO: Implement SplashController
-
+  FirebaseAuth _auth = FirebaseAuth.instance;
   final count = 0.obs;
   RxDouble opacity = 0.0.obs;
   AnimationController? _controller;
   @override
   void onInit() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 3),
-    );
-    _controller!.forward();
+    final user = _auth.currentUser;
+    if (user != null) {
+      _controller = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 3),
+      );
+      _controller!.forward();
 
-    // Future.delayed(const Duration(seconds: 4), () {
-    //   Get.offAllNamed(MainTasbihScreen.id);
-    // });
-    _controller!.addListener(() {
-      opacity.value = _controller!.value;
+      // Future.delayed(const Duration(seconds: 4), () {
+      //   Get.offAllNamed(MainTasbihScreen.id);
+      // });
+      _controller!.addListener(() {
+        opacity.value = _controller!.value;
 
-      if (opacity.value >= 1.0) {
-        Get.offAndToNamed(Routes.HOME);
-      }
-    });
+        if (opacity.value >= 1.0) {
+          Get.offAndToNamed(Routes.HOME);
+        }
+      });
+    } else {
+      _controller = AnimationController(
+        vsync: this,
+        duration: const Duration(seconds: 3),
+      );
+      _controller!.forward();
+
+      // Future.delayed(const Duration(seconds: 4), () {
+      //   Get.offAllNamed(MainTasbihScreen.id);
+      // });
+      _controller!.addListener(() {
+        opacity.value = _controller!.value;
+
+        if (opacity.value >= 1.0) {
+          Get.offAndToNamed(Routes.SIGNUP);
+        }
+      });
+    }
+
     super.onInit();
   }
 
