@@ -86,14 +86,14 @@ class SignupView extends GetView<SignupController> {
                     SizedBox(
                       height: 31.h,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w),
-                      child: CstmTextFieldTemplate(
-                        validator: controller.requiredValidator,
-                        hintText: 'Enter Email',
-                        labelText: 'Email Adress',
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    //   child: CstmTextFieldTemplate(
+                    //     validator: controller.requiredValidator,
+                    //     hintText: 'Enter Email',
+                    //     labelText: 'Email Adress',
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 15.h,
                     ),
