@@ -18,6 +18,12 @@ class LoginController extends GetxController {
   bool isHideText = false;
   String initialCountry = 'SA';
 
+//email validate
+
+  final emailValidator = MultiValidator(
+      [EmailValidator(errorText: 'Enter a valid email address')]);
+
+//--pass validate
   final requiredValidator = RequiredValidator(errorText: 'Required Field');
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'Required Field'),
@@ -67,6 +73,11 @@ class LoginController extends GetxController {
     } else {
       customSnackbar("Server error", "Email or Password is wrong");
     }
+  }
+
+//----pass hide
+  void ishide() {
+    isHideText = !isHideText;
   }
 
   void increment() => count.value++;

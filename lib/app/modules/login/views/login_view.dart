@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_transition_mixin.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../shared/widgets/blue_btn.dart';
 import '../../../../shared/widgets/cstm_text_field.dart';
 import '../../../../utils/assets.dart';
 import '../../../../utils/colors.dart';
+import '../../signup/views/social_account_row.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -115,7 +117,7 @@ class LoginView extends GetView<LoginController> {
                       child: CstmTextFieldTemplate(
                         hintText: "enter_email",
                         labelText: 'email_addres',
-                        validator: emailValidator,
+                        validator: controller.emailValidator,
                       ),
                     ),
                     SizedBox(
@@ -124,16 +126,14 @@ class LoginView extends GetView<LoginController> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: CstmTextFieldTemplate(
-                        validator: passwordValidator,
+                        validator: controller.passwordValidator,
                         onChanged: (value) {},
                         hintText: 'password',
                         labelText: 'password',
                         //   showSuffixIcon: true,
-                        hideText: isHideText,
+                        hideText: controller.isHideText,
                         onTap: () {
-                          setState(() {
-                            isHideText = !isHideText;
-                          });
+                          controller.ishide();
                         },
                       ),
                     ),
@@ -153,13 +153,13 @@ class LoginView extends GetView<LoginController> {
                           const Spacer(),
                           TextButton(
                               onPressed: () {
-                                ReUse().goToCreatNewPasswordScreen(context);
+                                // ReUse().goToCreatNewPasswordScreen(context);
                               },
                               child: GestureDetector(
-                                onTap: () =>
-                                    reUse.goToForgetPasswordScreen(context),
+                                onTap: () => null,
+                                // reUse.goToForgetPasswordScreen(context),
                                 child: Text(
-                                  'forgot_pass',
+                                  'Forget Password',
                                   style: GoogleFonts.yantramanav(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w500,
@@ -175,7 +175,9 @@ class LoginView extends GetView<LoginController> {
                     BlueBtn(
                       title: 'log_in',
                       color: lightBluishColor,
-                      onPressed: submitLogin,
+                      onPressed: () {
+                        controller.signIn();
+                      },
                     ),
                     SizedBox(
                       height: 21.h,
@@ -201,7 +203,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                         GestureDetector(
                             onTap: () {
-                              ReUse().goToSignUpScreen(context);
+                            //  ReUse().goToSignUpScreen(context);
                             },
                             child: Text(
                               "register",
