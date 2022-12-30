@@ -46,7 +46,7 @@ class LoginController extends GetxController {
   }
 
   signIn() async {
-    print("sigup call");
+    print("sigup cal");
     if (formKey.currentState!.validate()) {
       isLoading = true;
 
