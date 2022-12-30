@@ -14,6 +14,7 @@ class CstmTextFieldTemplate extends StatelessWidget {
   final String labelText;
   final bool hideText;
   final bool isPassword;
+  final bool showpass;
   final String ObscuringCharacter;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
@@ -23,6 +24,7 @@ class CstmTextFieldTemplate extends StatelessWidget {
 
   const CstmTextFieldTemplate({
     Key? key,
+    this.showpass = false,
     this.isBorder = true,
     this.hintText = '',
     this.labelText = '',
@@ -39,11 +41,10 @@ class CstmTextFieldTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
       onChanged: onChanged,
       obscuringCharacter: ObscuringCharacter,
       obscureText: hideText,
-      keyboardType: TextInputType.number,
+      keyboardType: keyboardType,
       style: GoogleFonts.yantramanav(
         color: blackColor,
         fontSize: 13.sp,
@@ -57,14 +58,16 @@ class CstmTextFieldTemplate extends StatelessWidget {
             fontSize: 15.sp, fontWeight: FontWeight.w500, color: fontColor),
         hintStyle: GoogleFonts.yantramanav(
             fontSize: 15.sp, fontWeight: FontWeight.w500, color: blackColor),
-        // suffixIcon: GestureDetector(
-        //   onTap: onTap,
-        //   child: Icon(
-        //     // Based on passwordVisible state choose the icon
-        //     isPassword ? Icons.visibility_off : Icons.visibility,
-        //     color: Theme.of(context).primaryColorDark,
-        //   ),
-        // ),
+        suffixIcon: isPassword
+            ? GestureDetector(
+                onTap: onTap,
+                child: Icon(
+                  // Based on passwordVisible state choose the icon
+                  showpass ? Icons.visibility_off : Icons.visibility,
+                  color: Theme.of(context).primaryColorDark,
+                ),
+              )
+            : null,
         border: outlineInputBorder,
         focusedBorder: isBorder ? outlineInputBorder : underlineInputBorder,
         enabledBorder: isBorder ? outlineInputBorder : underlineInputBorder,

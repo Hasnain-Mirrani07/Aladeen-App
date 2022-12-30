@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/widgets/custome_snackbar.dart';
@@ -11,6 +13,27 @@ class LoginController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+//------signin
+  bool isHideText = false;
+  String initialCountry = 'SA';
+
+//email validate
+
+  final emailValidator = MultiValidator(
+      [EmailValidator(errorText: 'Enter a valid email address')]);
+
+//--pass validate
+  final requiredValidator = RequiredValidator(errorText: 'Required Field');
+  final passwordValidator = MultiValidator([
+    RequiredValidator(errorText: 'Required Field'),
+    MaxLengthValidator(20, errorText: 'Maximum password limit'),
+    MinLengthValidator(8, errorText: 'Minimum password limit'),
+    PatternValidator(r'(?=.*?[#?!@$%^&*-])',
+        errorText: 'Please use special Chracter')
+  ]);
+  // var outlineInputBorder =
+  //     OutlineInputBorder(borderSide: BorderSide(width: 1.w, color: greyColor));
   bool isLoading = false;
   final count = 0.obs;
   @override
@@ -29,7 +52,7 @@ class LoginController extends GetxController {
   }
 
   signIn() async {
-    print("sigup call");
+    print("sigup cal");
     if (formKey.currentState!.validate()) {
       isLoading = true;
 
@@ -50,6 +73,11 @@ class LoginController extends GetxController {
     } else {
       customSnackbar("Server error", "Email or Password is wrong");
     }
+  }
+
+//----pass hide
+  void ishide() {
+    isHideText = !isHideText;
   }
 
   void increment() => count.value++;
