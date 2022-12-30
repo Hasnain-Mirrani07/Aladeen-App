@@ -9,6 +9,7 @@ import '../../../../shared/widgets/blue_btn.dart';
 import '../../../../shared/widgets/cstm_text_field.dart';
 import '../../../../utils/assets.dart';
 import '../../../../utils/colors.dart';
+import '../../../routes/app_pages.dart';
 import '../../signup/views/social_account_row.dart';
 import '../controllers/login_controller.dart';
 
@@ -143,7 +144,7 @@ class LoginView extends GetView<LoginController> {
                         children: [
                           Checkbox(value: true, onChanged: (value) {}),
                           Text(
-                            "remember_me",
+                            "Remember me",
                             style: GoogleFonts.yantramanav(
                               color: blackColor,
                               fontSize: 14.sp,
@@ -173,7 +174,7 @@ class LoginView extends GetView<LoginController> {
                       height: 29.h,
                     ),
                     BlueBtn(
-                      title: 'log_in',
+                      title: 'login',
                       color: lightBluishColor,
                       onPressed: () {
                         controller.signIn();
@@ -194,7 +195,7 @@ class LoginView extends GetView<LoginController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "${'no_account'}  ",
+                          "${'Not Account'}  ",
                           style: GoogleFonts.yantramanav(
                             color: blackColor,
                             fontSize: 14.sp,
@@ -203,7 +204,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                         GestureDetector(
                             onTap: () {
-                            //  ReUse().goToSignUpScreen(context);
+                              Get.toNamed(Routes.SIGNUP);
                             },
                             child: Text(
                               "register",
@@ -242,7 +243,7 @@ class LoginView extends GetView<LoginController> {
             width: 10.w,
           ),
           Text(
-            "or_login",
+            "or Login",
             style: TextStyle(
                 fontSize: 14.sp, fontWeight: FontWeight.w400, color: greyColor),
           ),

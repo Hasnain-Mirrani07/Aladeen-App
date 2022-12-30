@@ -20,7 +20,10 @@ class SignupController extends GetxController {
 
   //signUp
   final phoneNoController = TextEditingController();
-  bool isHideText = false;
+  bool isHideText = true;
+  RxBool showpass = true.obs;
+  RxBool showpassConf = true.obs;
+
   String initialCountry = 'SA';
   PhoneNumber number = PhoneNumber(isoCode: 'AE');
   final requiredValidator = RequiredValidator(errorText: 'Required Field');
@@ -70,6 +73,15 @@ class SignupController extends GetxController {
     } else {
       customSnackbar("Server error", "Email or Password is wrong");
     }
+  }
+
+  void ishideConf() {
+    showpassConf.toggle();
+  }
+
+  void ishide() {
+    showpass.toggle();
+    print("show pass=>$showpass");
   }
 
   void increment() => count.value++;
