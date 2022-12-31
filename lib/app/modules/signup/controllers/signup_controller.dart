@@ -289,4 +289,8 @@ class SignupController extends GetxController {
       ),
     );
   }
+
+  //save record of creat account
+
+  final firestore = FirebaseFireStore.Instance.collection("creataccount");
 }
