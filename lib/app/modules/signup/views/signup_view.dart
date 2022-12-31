@@ -15,6 +15,7 @@ import '../controllers/signup_controller.dart';
 
 class SignupView extends GetView<SignupController> {
   const SignupView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -66,6 +67,62 @@ class SignupView extends GetView<SignupController> {
                         ),
                         SizedBox(
                           height: 50.h,
+                        ),
+                        GetBuilder<SignupController>(
+                          builder: (controller) => Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                controller.imagef != null
+                                    ? Stack(
+                                        //  clipBehavior: Clip.none,
+                                        children: [
+                                          Container(
+                                            width: 77.w,
+                                            height: 80.w,
+                                            // padding: EdgeInsets.only(
+                                            //     left: 4.w, right: 5.w, top: 5.h, bottom: 6.h),
+                                            decoration: BoxDecoration(
+                                              //  borderRadius: BorderRadius.circular(5.r),
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: FileImage(
+                                                  controller.imagef!,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            right: -.1.w,
+                                            top: -.1.h,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.red[50],
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  controller.cancelImg();
+                                                },
+                                                child: Icon(
+                                                  Icons.close,
+                                                  color: Colors.red,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : controller.addImgBtn(context),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 23.w),
