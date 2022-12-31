@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:botim_app/app/routes/app_pages.dart';
 import 'package:botim_app/shared/widgets/custome_snackbar.dart';
 import 'package:botim_app/utils/colors.dart';
@@ -7,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/_http/_html/_file_decoder_html.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class SignupController extends GetxController {
@@ -84,5 +88,205 @@ class SignupController extends GetxController {
     print("show pass=>$showpass");
   }
 
-  void increment() => count.value++;
+  //--------------------------------------------------------------
+  File? imagef;
+  void imgFromCamera() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+
+    imagef = File(image!.path);
+    update();
+  }
+
+  //--------------------------------------------------------------
+  void imgFromGallery() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
+
+    imagef = File(image.path);
+    update();
+  }
+
+  void cancelImg() {
+    imagef = null;
+    update();
+  }
+
+//----img picker
+  Widget addImgBtn(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(),
+      padding: EdgeInsets.only(
+        left: 4.w,
+        right: 5.w,
+      ),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              if (imagef == null) {
+                _showImagePickerSheet(context);
+              } else {
+                imagef = null;
+              }
+              update();
+            },
+            child: Container(
+              height: 77.h,
+              width: 80.w,
+              decoration: BoxDecoration(
+                  color: Colors.lightBlue, shape: BoxShape.circle),
+              child: Icon(
+                Icons.camera_alt_outlined,
+                size: 21,
+              ),
+              // child: ElevatedButton(
+              //   style: ButtonStyle(
+              //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              //         RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(5.0),
+              //             side: BorderSide(color: Colors.transparent))),
+              //     backgroundColor: MaterialStateProperty.all(
+              //       _image == null ? Colors.transparent : Colors.transparent,
+              //     ),
+              //   ),
+              //   onPressed: () {
+              //     if (_image == null) {
+              //       _showImagePickerSheet(context);
+              //     } else {
+              //       setState(() {
+              //         _image = null;
+              //       });
+              //     }
+              //   },
+              //   // child: Column(
+              //   //   children: [
+              //   //     SizedBox(
+              //   //       height: 5.h,
+              //   //     ),
+              //   //     // Icon(
+              //   //     //   Icons.add,
+              //   //     //   color: lightBluishColor,
+              //   //     //   size: 24.0,
+              //   //     // ),
+              //   //     // Text(
+              //   //     //   "add_img",
+              //   //     //   style: GoogleFonts.inter(
+              //   //     //       fontWeight: FontWeight.w400,
+              //   //     //       fontSize: 11.sp,
+              //   //     //       color: _image != null ? whiteColor : lightBluishColor),
+              //   //     // ),
+
+              //   //     SizedBox(
+              //   //       height: 5.h,
+              //   //     )
+              //   //     // const FittedBox(
+              //   //     //     fit: BoxFit.contain, child: Text("(Optional)"))
+              //   //   ],
+              //   // ),
+              // ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//image sheet
+
+  void _showImagePickerSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return Container(
+            // decoration: const BoxDecoration(
+            //   color: Colors.white,
+            // ),
+            height: 125.h,
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Add Photo',
+                  style: TextStyle(
+                      color: lightBluishColor,
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  children: [
+                    _galleryBtn(context),
+                    SizedBox(
+                      width: 20.h,
+                    ),
+                    _cameraPickerBtn(context),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+//galary camra camra piker
+  GestureDetector _galleryBtn(context) {
+    return GestureDetector(
+      onTap: () {
+        imgFromGallery();
+        //_uploadFile();
+        Navigator.pop(context);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(
+            Icons.photo,
+            size: 30.sp,
+            color: lightBluishColor,
+          ),
+          Text(
+            'Gallery',
+            style: TextStyle(
+              color: lightBluishColor,
+              fontSize: 18.sp,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  //--------------------------------------------------------------
+  GestureDetector _cameraPickerBtn(context) {
+    return GestureDetector(
+      onTap: () {
+        imgFromCamera();
+
+        Navigator.pop(context);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(
+            Icons.camera_alt,
+            size: 30.sp,
+            color: lightBluishColor,
+          ),
+          Text(
+            'Camera',
+            style: TextStyle(
+              color: lightBluishColor,
+              fontSize: 18.sp,
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }
