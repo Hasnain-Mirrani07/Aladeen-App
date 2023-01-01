@@ -111,11 +111,7 @@ class SignupController extends GetxController {
     }
   }
   //verify otp
-
-  // void verify(var verificationId, var smsCode) {
-  //   final credential = PhoneAuthProvider.credential(
-  //       verificationId: verificationId, smsCode: smsCode);
-  // }
+//git ripositry
 
   void ishideConf() {
     showpassConf.toggle();
