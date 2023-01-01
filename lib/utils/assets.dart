@@ -8,6 +8,8 @@ const String fbLogo = 'assets/icons/fb_icon.png';
 const String googleLogo = 'assets/icons/google_icon.png';
 const String appleIcon = 'assets/icons/apple_icon.png';
 const String splash = 'assets/images/splash.png';
+const String verifyEmail = 'assets/icons/verifyEmail.png';
+
 
 //login
 

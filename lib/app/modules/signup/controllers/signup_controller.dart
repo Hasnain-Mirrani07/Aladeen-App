@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:botim_app/app/modules/signup/views/verify_email/verify_number.dart';
 import 'package:botim_app/app/routes/app_pages.dart';
 import 'package:botim_app/shared/widgets/custome_snackbar.dart';
+import 'package:botim_app/utils/assets.dart';
 import 'package:botim_app/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,25 +18,33 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 class SignupController extends GetxController {
   //TODO: Implement SignupController
   final formKeySignup = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  bool isLoading = false;
-  final count = 0.obs;
+  // TextEditingController emailController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
+  RxString email = ''.obs;
+  RxString pass = ''.obs;
+  void getEmail(value) {
+    email.value = value;
+  }
 
+  void getPass(value) {
+    pass.value = value;
+  }
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final count = 0.obs;
   //signUp
   final phoneNoController = TextEditingController();
   bool isHideText = true;
   RxBool showpass = true.obs;
   RxBool showpassConf = true.obs;
-
+  RxBool isLoading = false.obs;
   String initialCountry = 'SA';
-  PhoneNumber number = PhoneNumber(isoCode: 'AE');
+  PhoneNumber number = PhoneNumber(isoCode: 'PK');
   final requiredValidator = RequiredValidator(errorText: 'Required Field');
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'Required Field'),
     MaxLengthValidator(20, errorText: 'Maximum password limit'),
-    MinLengthValidator(8, errorText: 'Minimum password limit'),
+    MinLengthValidator(6, errorText: 'Minimum password limit'),
     PatternValidator(r'(?=.*?[#?!@$%^&*-])',
         errorText: 'Please use special Chracter')
   ]);
@@ -55,29 +65,57 @@ class SignupController extends GetxController {
     super.onClose();
   }
 
-  signUp() async {
+  verifyNo() async {
     print("sigup call");
-    if (formKeySignup.currentState!.validate()) {
-      isLoading = true;
 
-      try {
-        await _auth
-            .createUserWithEmailAndPassword(
-                email: nameController.text.toString(),
-                password: passwordController.text.toString())
-            .then((value) {
-          isLoading = false;
-          Get.toNamed(Routes.LOGIN);
-          customSnackbar("Succfully", "Signup");
-        });
-      } catch (e) {
-        isLoading = false;
-        customSnackbar("Sorry", "Email or Password is wrong");
-      }
+    if (formKeySignup.currentState!.validate()) {
+      isLoading = true.obs;
+      String noWithCode = "+92" + phoneNoController.text.toString();
+      print("No==>>>${noWithCode}");
+      _auth.verifyPhoneNumber(
+        phoneNumber: noWithCode,
+        verificationCompleted: (_) {},
+        verificationFailed: (error) {
+          customSnackbar("$error", "Verify error");
+        },
+        codeSent: (verificationId, forceResendingToken) {
+          Get.to(VerifyNumberScreen(
+            verificationId: verificationId,
+            VerificationToken: forceResendingToken,
+          ));
+        },
+        codeAutoRetrievalTimeout: (e) {
+          customSnackbar("$e", "codeAutoRetrievalTimeout");
+        },
+      );
     } else {
-      customSnackbar("Server error", "Email or Password is wrong");
+      customSnackbar("Validation error", "Email or Password is wrong");
     }
   }
+
+  void creatAccount() async {
+    try {
+      String noEamil = phoneNoController.text.toString() + "@gmail.com";
+      print("noEmail=======>>>$noEamil");
+      print("noEmail==${pass.value}=====>>>${email.value}");
+      await _auth
+          .createUserWithEmailAndPassword(
+              email: noEamil, password: pass.toString())
+          .then((value) {
+        Get.toNamed(Routes.LOGIN);
+
+        customSnackbar("Succfully", "Signup");
+      });
+    } catch (e) {
+      customSnackbar("Sorry", "Email or Password is wrong");
+    }
+  }
+  //verify otp
+
+  // void verify(var verificationId, var smsCode) {
+  //   final credential = PhoneAuthProvider.credential(
+  //       verificationId: verificationId, smsCode: smsCode);
+  // }
 
   void ishideConf() {
     showpassConf.toggle();
@@ -290,7 +328,24 @@ class SignupController extends GetxController {
     );
   }
 
+//drop down menu
+//list drop down
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(child: Text("USA"), value: "USA"),
+      DropdownMenuItem(child: Text("Canada"), value: "Canada"),
+      DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
+      DropdownMenuItem(child: Text("England"), value: "England"),
+    ];
+    return menuItems;
+  }
+
+  RxString selectedValue = "USA".obs;
+
+  void changeDrowpDownValue(value) {
+    selectedValue.value = value;
+  }
+
   //save record of creat account
 
-  final firestore = FirebaseFireStore.Instance.collection("creataccount");
 }

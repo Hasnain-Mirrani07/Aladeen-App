@@ -19,7 +19,7 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Form(
-        key: controller.formKey,
+        key: controller.formKeyLogin,
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           body: Stack(
@@ -116,9 +116,12 @@ class LoginView extends GetView<LoginController> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: CstmTextFieldTemplate(
+                        onChanged: (_email) {
+                          controller.getEmail(_email);
+                        },
                         hintText: "enter_email",
                         labelText: 'email_addres',
-                        validator: controller.emailValidator,
+                        validator: controller.requiredValidator,
                       ),
                     ),
                     SizedBox(
@@ -128,7 +131,9 @@ class LoginView extends GetView<LoginController> {
                       padding: EdgeInsets.symmetric(horizontal: 24.w),
                       child: CstmTextFieldTemplate(
                         validator: controller.passwordValidator,
-                        onChanged: (value) {},
+                        onChanged: (_pass) {
+                          controller.getPass(_pass);
+                        },
                         hintText: 'password',
                         labelText: 'password',
                         //   showSuffixIcon: true,

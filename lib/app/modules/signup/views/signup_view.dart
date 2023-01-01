@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:botim_app/app/modules/signup/views/alreadyaccount.dart';
 import 'package:botim_app/app/modules/signup/views/or_login_with.dart';
 import 'package:botim_app/app/modules/signup/views/social_account_row.dart';
@@ -148,6 +150,9 @@ class SignupView extends GetView<SignupController> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CstmTextFieldTemplate(
+                            onChanged: (email) {
+                              controller.getEmail(email);
+                            },
                             validator: controller.requiredValidator,
                             hintText: 'Enter Full Name',
                             labelText: 'Full Name',
@@ -162,6 +167,10 @@ class SignupView extends GetView<SignupController> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CstmTextFieldTemplate(
+                            onChanged: (pass) {
+                              controller.getPass(pass);
+                              print(pass);
+                            },
                             validator: controller.passwordValidator,
                             hintText: 'password',
                             labelText: 'password',
@@ -203,16 +212,41 @@ class SignupView extends GetView<SignupController> {
                         SizedBox(
                           height: 15.h,
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.w),
-                          child: CstmTextFieldTemplate(
-                            validator: controller.passwordValidator,
-                            hintText: 'Location',
-                            labelText: 'Location',
-                            hideText: true,
-                            isPassword: false,
-                          ),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.bottomLeft,
+                        //   child: Padding(
+                        //     padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        //     child: DropdownButtonFormField(
+                        //         decoration: InputDecoration(
+                        //           enabledBorder: OutlineInputBorder(
+                        //             borderSide: BorderSide(
+                        //                 color: Colors.blue, width: 2),
+                        //             borderRadius: BorderRadius.circular(20),
+                        //           ),
+                        //           border: OutlineInputBorder(
+                        //             borderSide: BorderSide(
+                        //                 color: Colors.blue, width: 2),
+                        //             borderRadius: BorderRadius.circular(20),
+                        //           ),
+                        //           //  filled: true,
+                        //           // fillColor: Colors.blueAccent,
+                        //         ),
+                        //         // dropdownColor: Colors.blueAccent,
+                        //         value: controller.selectedValue.value,
+                        //         onChanged: (newValue) {
+                        //           controller.changeDrowpDownValue(newValue);
+                        //         },
+                        //         items: controller.dropdownItems),
+
+                        //     // child: CstmTextFieldTemplate(
+                        //     //   validator: controller.requiredValidator,
+                        //     //   hintText: 'Location',
+                        //     //   labelText: 'Location',
+                        //     //   hideText: false,
+                        //     //   isPassword: false,
+                        //     // ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 15.h,
                         ),
@@ -221,7 +255,7 @@ class SignupView extends GetView<SignupController> {
                             title: 'Sign up',
                             color: lightBluishColor,
                             onPressed: () {
-                              controller.signUp();
+                              controller.verifyNo();
                             }),
                         SizedBox(
                           height: 21.h,
