@@ -9,7 +9,7 @@ import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
   //TODO: Implement LoginController
-  final formKey = GlobalKey<FormState>();
+  final formKeyLogin = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,10 +20,20 @@ class LoginController extends GetxController {
 
 //email validate
 
-  final emailValidator = MultiValidator(
-      [EmailValidator(errorText: 'Enter a valid email address')]);
+  // final emailValidator = MultiValidator(
+  //     [EmailValidator(errorText: 'Enter a valid email address')]);
 
 //--pass validate
+  RxString email = ''.obs;
+  RxString pass = ''.obs;
+  void getEmail(value) {
+    email.value = value;
+  }
+
+  void getPass(value) {
+    pass.value = value;
+  }
+
   final requiredValidator = RequiredValidator(errorText: 'Required Field');
   final passwordValidator = MultiValidator([
     RequiredValidator(errorText: 'Required Field'),
@@ -52,15 +62,16 @@ class LoginController extends GetxController {
   }
 
   signIn() async {
-    print("sigup cal");
-    if (formKey.currentState!.validate()) {
+    print("Login cal");
+    if (formKeyLogin.currentState!.validate()) {
       isLoading = true;
+      String noEamil = email.value.toString() + "@gmail.com";
+      print("===login email====>>$noEamil");
 
       try {
         await _auth
             .signInWithEmailAndPassword(
-                email: nameController.text.toString(),
-                password: passwordController.text.toString())
+                email: noEamil, password: pass.toString())
             .then((value) {
           isLoading = false;
           Get.toNamed(Routes.HOME);
