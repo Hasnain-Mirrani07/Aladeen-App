@@ -1,0 +1,5 @@
+{
+    "editor.inlineSuggest.enabled": true,
+    "editor.quickSuggestionsDelay": 1,
+    "editor.suggest.shareSuggestSelections": true
+}
