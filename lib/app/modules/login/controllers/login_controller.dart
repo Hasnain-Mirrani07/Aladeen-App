@@ -1,3 +1,4 @@
+import 'package:botim_app/app/modules/home/views/navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,7 +75,7 @@ class LoginController extends GetxController {
                 email: noEamil, password: pass.toString())
             .then((value) {
           isLoading = false;
-          Get.toNamed(Routes.HOME);
+          Get.to(const BottomNav());
           customSnackbar("Succfully", "Signup");
         });
       } catch (e) {

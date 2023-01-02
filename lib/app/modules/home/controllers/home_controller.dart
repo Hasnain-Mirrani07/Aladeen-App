@@ -1,11 +1,27 @@
 import 'package:botim_app/app/routes/app_pages.dart';
 import 'package:botim_app/shared/widgets/custome_snackbar.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
+import '../../login/views/login_view.dart';
+import '../../signup/views/signup_view.dart';
+import '../views/home_view.dart';
+
 class HomeController extends GetxController {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+var page = 0.obs;
+
+  void indexchange(navIndex) {
+    page.value = navIndex;
+  }
+   List bodyPage = [
+    HomeView(),
+    LoginView(),
+    SignupView(),
+  ];
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   void signOut() {
     try {
       _auth.signOut().then((value) {
