@@ -118,7 +118,7 @@ class SignupView extends GetView<SignupController> {
                                           ),
                                         ],
                                       )
-                                    : controller.addImgBtn(context),
+                                    : controller.addImgBtn(),
                                 SizedBox(
                                   width: 20.w,
                                 ),

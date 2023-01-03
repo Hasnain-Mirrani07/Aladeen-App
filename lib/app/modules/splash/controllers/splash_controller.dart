@@ -1,3 +1,4 @@
+import 'package:botim_app/app/modules/home/views/navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/animation.dart';
@@ -29,7 +30,7 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
         opacity.value = _controller!.value;
 
         if (opacity.value >= 1.0) {
-          Get.offAndToNamed(Routes.HOME);
+          Get.off(const BottomNav());
         }
       });
     } else {
