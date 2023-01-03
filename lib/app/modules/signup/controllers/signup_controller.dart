@@ -149,7 +149,7 @@ class SignupController extends GetxController {
   }
 
 //----img picker
-  Widget addImgBtn(BuildContext context) {
+  Widget addImgBtn() {
     return Container(
       decoration: BoxDecoration(),
       padding: EdgeInsets.only(
@@ -161,7 +161,7 @@ class SignupController extends GetxController {
           GestureDetector(
             onTap: () {
               if (imagef == null) {
-                _showImagePickerSheet(context);
+                _showImagePickerSheet();
               } else {
                 imagef = null;
               }
@@ -230,50 +230,50 @@ class SignupController extends GetxController {
 
 //image sheet
 
-  void _showImagePickerSheet(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext buildContext) {
-          return Container(
-            // decoration: const BoxDecoration(
-            //   color: Colors.white,
-            // ),
-            height: 125.h,
-            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Add Photo',
-                  style: TextStyle(
-                      color: lightBluishColor,
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  children: [
-                    _galleryBtn(context),
-                    SizedBox(
-                      width: 20.h,
-                    ),
-                    _cameraPickerBtn(context),
-                  ],
-                )
-              ],
+  void _showImagePickerSheet() {
+    //    context: context,
+    builder:
+    (_) {
+      return Container(
+        // decoration: const BoxDecoration(
+        //   color: Colors.white,
+        // ),
+        height: 125.h,
+        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Add Photo',
+              style: TextStyle(
+                  color: lightBluishColor,
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.bold),
             ),
-          );
-        });
+            Row(
+              children: [
+                _galleryBtn(),
+                SizedBox(
+                  width: 20.h,
+                ),
+                _cameraPickerBtn(),
+              ],
+            )
+          ],
+        ),
+      );
+    };
   }
 
 //galary camra camra piker
-  GestureDetector _galleryBtn(context) {
+  GestureDetector _galleryBtn() {
     return GestureDetector(
       onTap: () {
         imgFromGallery();
         //_uploadFile();
-        Navigator.pop(context);
+        Get.back();
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -296,12 +296,12 @@ class SignupController extends GetxController {
   }
 
   //--------------------------------------------------------------
-  GestureDetector _cameraPickerBtn(context) {
+  GestureDetector _cameraPickerBtn() {
     return GestureDetector(
       onTap: () {
         imgFromCamera();
 
-        Navigator.pop(context);
+        Get.back();
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

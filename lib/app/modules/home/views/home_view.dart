@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'dart:ui';
 
 import 'package:botim_app/app/modules/home/views/navbar.dart';
@@ -8,11 +7,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../signup/controllers/signup_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -35,30 +36,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Home screen"), actions: [
-        GestureDetector(
-            onTap: () {
-              Get.defaultDialog(
-  title: "Dialog Title",
-  content: Form(
-    child: Column(
-      children: [
-        TextFormField(
-          decoration: InputDecoration(labelText: "Field 1"),
-        ),
-        TextFormField(
-          decoration: InputDecoration(labelText: "Field 2"),
-        ),
-      ],
-    ),
-  ),
-  cancel: ElevatedButton(child: Text("Cancel")),
-  confirm: Ele,
-  onConfirm: () {
-    // Submit form data
-  },
-);
-            },
-            child: Icon(Icons.add)),
+        addCategory(),
         Padding(
           padding: const EdgeInsets.only(right: 30.0),
           child: GestureDetector(
@@ -178,5 +156,92 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
     );
+  }
+
+  Widget addCategory() {
+    return GestureDetector(
+        onTap: () {
+          Get.defaultDialog(
+            title: "Dialog Title",
+            content: Form(
+              child: Column(
+                children: [
+                  GetBuilder<SignupController>(
+                    builder: (controller) => Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          controller.imagef != null
+                              ? Stack(
+                                  //  clipBehavior: Clip.none,
+                                  children: [
+                                    Container(
+                                      width: 77.w,
+                                      height: 80.w,
+                                      // padding: EdgeInsets.only(
+                                      //     left: 4.w, right: 5.w, top: 5.h, bottom: 6.h),
+                                      decoration: BoxDecoration(
+                                        //  borderRadius: BorderRadius.circular(5.r),
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: FileImage(
+                                            controller.imagef!,
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: -.1.w,
+                                      top: -.1.h,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.red[50],
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            controller.cancelImg();
+                                          },
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Colors.red,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : controller.addImgBtn(),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "Add Category Name"),
+                  ),
+                  // TextFormField(
+                  //   decoration: InputDecoration(labelText: "Field 2"),
+                  // ),
+                ],
+              ),
+            ),
+            cancel: ElevatedButton(onPressed: null, child: Text("Cancel")),
+            confirm: ElevatedButton(
+              onPressed: null,
+              child: Text("Confirm"),
+            ),
+            onConfirm: () {
+              // Submit form data
+            },
+          );
+        },
+        child: Icon(Icons.add));
   }
 }
