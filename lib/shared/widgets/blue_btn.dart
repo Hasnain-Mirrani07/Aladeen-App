@@ -4,12 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BlueBtn extends StatelessWidget {
+  bool isLoading;
   final String title;
   final Color color;
   final double Horizentalpading;
   final void Function()? onPressed;
-  const BlueBtn({
+  BlueBtn({
     Key? key,
+    this.isLoading = false,
     required this.title,
     this.color = lightBluishColor,
     required this.onPressed,
@@ -31,14 +33,16 @@ class BlueBtn extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ))),
             child: Center(
-                child: Text(
-              title,
-              style: GoogleFonts.yantramanav(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: whiteColor,
-              ),
-            ))),
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : Text(
+                        title,
+                        style: GoogleFonts.yantramanav(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: whiteColor,
+                        ),
+                      ))),
       ),
     );
   }

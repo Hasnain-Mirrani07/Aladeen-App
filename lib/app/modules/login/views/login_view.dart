@@ -14,12 +14,13 @@ import '../../signup/views/social_account_row.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-  const LoginView({Key? key}) : super(key: key);
+  LoginView({Key? key}) : super(key: key);
+  final formKeyLogin = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Form(
-        key: controller.formKeyLogin,
+        key: formKeyLogin,
         child: Scaffold(
           resizeToAvoidBottomInset: true,
           body: Stack(
@@ -56,7 +57,7 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ),
                     Text(
-                      "advisor",
+                      "Test App",
                       style: TextStyle(
                         color: blackColor,
                         fontSize: 27.sp,
@@ -182,7 +183,9 @@ class LoginView extends GetView<LoginController> {
                       title: 'login',
                       color: lightBluishColor,
                       onPressed: () {
-                        controller.signIn();
+                        if (formKeyLogin.currentState!.validate()) {
+                          controller.signIn();
+                        } else {}
                       },
                     ),
                     SizedBox(

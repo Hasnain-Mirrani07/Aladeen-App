@@ -1,36 +1,42 @@
 import 'dart:io';
-
 import 'package:botim_app/app/modules/signup/views/verify_email/verify_number.dart';
 import 'package:botim_app/app/routes/app_pages.dart';
 import 'package:botim_app/shared/widgets/custome_snackbar.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 import 'package:botim_app/utils/assets.dart';
 import 'package:botim_app/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/_http/_html/_file_decoder_html.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class SignupController extends GetxController {
-  //TODO: Implement SignupController
+  final DatabaseReference databaseRef =
+      FirebaseDatabase.instance.ref().child("userData");
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  firebase_storage.FirebaseStorage firebaseStorage =
+      firebase_storage.FirebaseStorage.instance;
+  RxBool isloading = false.obs;
   final formKeySignup = GlobalKey<FormState>();
   // TextEditingController emailController = TextEditingController();
   // TextEditingController passwordController = TextEditingController();
-  RxString email = ''.obs;
+  RxString name = ''.obs;
   RxString pass = ''.obs;
-  void getEmail(value) {
-    email.value = value;
+  void getName(value) {
+    name.value = value;
   }
 
   void getPass(value) {
     pass.value = value;
   }
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
   final count = 0.obs;
   //signUp
   final phoneNoController = TextEditingController();
@@ -66,48 +72,76 @@ class SignupController extends GetxController {
   }
 
   verifyNo() async {
-    print("sigup call");
+    print("===>>>Verify Mobile No");
 
-    if (formKeySignup.currentState!.validate()) {
-      isLoading = true.obs;
-      String noWithCode = "+92" + phoneNoController.text.toString();
-      print("No==>>>${noWithCode}");
-      _auth.verifyPhoneNumber(
-        phoneNumber: noWithCode,
-        verificationCompleted: (_) {},
-        verificationFailed: (error) {
-          customSnackbar("$error", "Verify error");
-        },
-        codeSent: (verificationId, forceResendingToken) {
-          Get.to(VerifyNumberScreen(
-            verificationId: verificationId,
-            VerificationToken: forceResendingToken,
-          ));
-        },
-        codeAutoRetrievalTimeout: (e) {
-          customSnackbar("$e", "codeAutoRetrievalTimeout");
-        },
-      );
-    } else {
-      customSnackbar("Validation error", "Email or Password is wrong");
-    }
+    isLoading = true.obs;
+    String noWithCode = "+92" + phoneNoController.text.toString();
+    // print("No==>>>${noWithCode}");
+    // print("noEmail==${pass.value}");
+    _auth.verifyPhoneNumber(
+      phoneNumber: noWithCode,
+      verificationCompleted: (_) {},
+      verificationFailed: (error) {
+        customSnackbar("$error", "Verify error");
+      },
+      codeSent: (verificationId, forceResendingToken) {
+        Get.to(VerifyNumberScreen(
+          verificationId: verificationId,
+          VerificationToken: forceResendingToken,
+        ));
+      },
+      codeAutoRetrievalTimeout: (e) {
+        customSnackbar(e.toString(), "Error");
+      },
+    );
   }
 
   void creatAccount() async {
+    isloading.value = true;
     try {
       String noEamil = phoneNoController.text.toString() + "@gmail.com";
-      print("noEmail=======>>>$noEamil");
-      print("noEmail==${pass.value}=====>>>${email.value}");
+      // print("noEmail=======>>>$noEamil");
+      // print("noEmail==${pass.value}=====>>>${email.value}");
       await _auth
           .createUserWithEmailAndPassword(
               email: noEamil, password: pass.toString())
-          .then((value) {
-        Get.toNamed(Routes.LOGIN);
+          .then((value) async {
+        //--Sava data to FirevaseDatabase
+        final uid = value.user!.uid.toString();
+        final userEmail = value.user!.email.toString();
+        final no = phoneNoController.text.toString();
+        var imgurl = '';
+        print("$name = $no $userEmail = $uid  ");
 
-        customSnackbar("Succfully", "Signup");
-      });
+//----Image upload-----
+        // firebase_storage.Reference ref =
+        //     firebase_storage.FirebaseStorage.instance.ref('/foldername' + uid);
+        // firebase_storage.UploadTask uploadTask = ref.putFile(imagef!.absolute);
+        // await Future.value(uploadTask).then((value) async {
+        //   imgurl = await ref.getDownloadURL();
+        // });
+
+//----All Data Added to Database----
+        databaseRef.child(value.user!.uid.toString()).set({
+          "uid": value.user!.uid.toString(),
+          "userName": name.toString(),
+          "userEmail": value.user!.email.toString(),
+          "mobileNo": phoneNoController.text.toString(),
+          "profilePic": "imgurl",
+          "online": "false"
+        }).then((value) {
+          isLoading.value = false;
+          customSnackbar("Successfully", "User Added");
+        }).onError((error, stackTrace) {
+          isLoading.value = false;
+          customSnackbar("Data not added ", "$error");
+        });
+        customSnackbar("email pass Added", "Auth call");
+
+        Get.toNamed(Routes.LOGIN);
+      }).onError((error, stackTrace) => customSnackbar("Auth error", "$error"));
     } catch (e) {
-      customSnackbar("Sorry", "Email or Password is wrong");
+      customSnackbar("Try Catch Error", "Email or Password is wrong");
     }
   }
   //verify otp
@@ -127,9 +161,12 @@ class SignupController extends GetxController {
   void imgFromCamera() async {
     final picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
-
-    imagef = File(image!.path);
-    update();
+    if (imagef != null) {
+      imagef = File(image!.path);
+      update();
+    } else {
+      customSnackbar("image is Empaty", "message");
+    }
   }
 
   //--------------------------------------------------------------
@@ -273,6 +310,7 @@ class SignupController extends GetxController {
     return GestureDetector(
       onTap: () {
         imgFromGallery();
+        update();
         //_uploadFile();
         Navigator.pop(context);
       },
@@ -303,6 +341,7 @@ class SignupController extends GetxController {
         imgFromCamera();
 
         Navigator.pop(context);
+        update();
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -324,18 +363,6 @@ class SignupController extends GetxController {
     );
   }
 
-//drop down menu
-//list drop down
-  List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("USA"), value: "USA"),
-      DropdownMenuItem(child: Text("Canada"), value: "Canada"),
-      DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
-      DropdownMenuItem(child: Text("England"), value: "England"),
-    ];
-    return menuItems;
-  }
-
   RxString selectedValue = "USA".obs;
 
   void changeDrowpDownValue(value) {
@@ -343,5 +370,35 @@ class SignupController extends GetxController {
   }
 
   //save record of creat account
+
+  //add category
+  var category = ''.obs;
+  void getCategory(category) {
+    category.value = category;
+  }
+
+  // void addCategory() async {
+  //   DatabaseReference databaseRef = FirebaseDatabase.instance.ref('Post');
+  //   print("pres");
+  //   try {
+  //     var id = DateTime.now().millisecond.toString();
+  //     firebase_storage.Reference ref =
+  //         firebase_storage.FirebaseStorage.instance.ref('/foldername' + id);
+  //     firebase_storage.UploadTask uploadTask = ref.putFile(imagef!.absolute);
+  //     await Future.value(uploadTask).then((value) async {
+  //       var newurl = await ref.getDownloadURL();
+  //       print("Data in category=> $id $newurl ${category.value}");
+  //       databaseRef.child(id).set({'id': id, 'title': newurl.toString()});
+  //       // databaseRef.child("category").child(id).set({
+  //       //   'id': id,
+  //       //   'categoryName': categoryController.text.toString(),
+  //       //   'imgurl': newurl.toString()
+  //       // });
+  //       print("upload");
+  //     });
+  //   } catch (e) {
+  //     return customSnackbar("Category Added", "Successfully");
+  //   }
+  // }
 
 }

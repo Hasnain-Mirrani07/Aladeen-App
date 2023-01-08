@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "479235368324-l6htr0qgama4a9hmf1h9m9oqns5cmp7m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.botim_app",
+            "certificate_hash": "388d6f1cf3187849bc24f3aa0eb82dd6b6e67563"
+          }
+        },
+        {
           "client_id": "479235368324-0558cjv2akvbahdvuil8hb4qo21vp60l.apps.googleusercontent.com",
           "client_type": 3
         }
