@@ -1,4 +1,5 @@
 import 'package:botim_app/app/modules/home/views/navbar.dart';
+import 'package:botim_app/singaltonClass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/animation.dart';
@@ -17,6 +18,7 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
   void onInit() {
     final user = _auth.currentUser;
     if (user != null) {
+      SessionController().userId = user.uid.toString();
       _controller = AnimationController(
         vsync: this,
         duration: const Duration(seconds: 3),

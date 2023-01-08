@@ -39,7 +39,7 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
   var otp;
   @override
   Widget build(BuildContext context) {
-    final _controller = Get.find<SignupController>().verifyNo();
+    final _controller = Get.find<SignupController>();
     //var size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -163,8 +163,8 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                             smsCode: otp.toString());
                         try {
                           await _auth.signInWithCredential(credential);
-                          _controller;
-                          Get.toNamed(Routes.LOGIN);
+
+                          _controller.creatAccount();
                         } catch (e) {
                           customSnackbar(
                               "Verification Code Error", "Please Try Again");

@@ -5,12 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../utils/colors.dart';
 
 class CustomButton extends StatelessWidget {
+  final isLoading;
   final String title;
   final Color color;
   final double Horizentalpading;
   final void Function()? onPressed;
   const CustomButton({
     Key? key,
+    this.isLoading = false,
     required this.title,
     this.color = lightBluishColor,
     required this.onPressed,
@@ -32,14 +34,16 @@ class CustomButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                 ))),
             child: Center(
-                child: Text(
-              title,
-              style: GoogleFonts.yantramanav(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w600,
-                color: whiteColor,
-              ),
-            ))),
+                child: isLoading
+                    ? CircularProgressIndicator()
+                    : Text(
+                        title,
+                        style: GoogleFonts.yantramanav(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: whiteColor,
+                        ),
+                      ))),
       ),
     );
   }

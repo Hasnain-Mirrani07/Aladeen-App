@@ -16,12 +16,13 @@ import '../../../../shared/widgets/phone_no_textfield.dart';
 import '../controllers/signup_controller.dart';
 
 class SignupView extends GetView<SignupController> {
-  const SignupView({Key? key}) : super(key: key);
+  SignupView({Key? key}) : super(key: key);
+  final _formKeySignup = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: controller.formKeySignup,
+        key: _formKeySignup,
         child: SafeArea(
           child: Scaffold(
             resizeToAvoidBottomInset: true,
@@ -118,7 +119,7 @@ class SignupView extends GetView<SignupController> {
                                           ),
                                         ],
                                       )
-                                    : controller.addImgBtn(),
+                                    : controller.addImgBtn(context),
                                 SizedBox(
                                   width: 20.w,
                                 ),
@@ -150,8 +151,8 @@ class SignupView extends GetView<SignupController> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 24.w),
                           child: CstmTextFieldTemplate(
-                            onChanged: (email) {
-                              controller.getEmail(email);
+                            onChanged: (name) {
+                              controller.getName(name);
                             },
                             validator: controller.requiredValidator,
                             hintText: 'Enter Full Name',
@@ -252,10 +253,15 @@ class SignupView extends GetView<SignupController> {
                         ),
 
                         BlueBtn(
+                            isLoading: controller.isLoading.value,
                             title: 'Sign up',
                             color: lightBluishColor,
                             onPressed: () {
-                              controller.verifyNo();
+                              if (_formKeySignup.currentState!.validate()) {
+                                controller.creatAccount();
+                              }
+
+                              //controller.verifyNo();
                             }),
                         SizedBox(
                           height: 21.h,

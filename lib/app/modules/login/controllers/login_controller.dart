@@ -6,6 +6,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/widgets/custome_snackbar.dart';
+import '../../../../singaltonClass.dart';
 import '../../../routes/app_pages.dart';
 
 class LoginController extends GetxController {
@@ -64,26 +65,24 @@ class LoginController extends GetxController {
 
   signIn() async {
     print("Login cal");
-    if (formKeyLogin.currentState!.validate()) {
-      isLoading = true;
-      String noEamil = email.value.toString() + "@gmail.com";
-      print("===login email====>>$noEamil");
 
-      try {
-        await _auth
-            .signInWithEmailAndPassword(
-                email: noEamil, password: pass.toString())
-            .then((value) {
-          isLoading = false;
-          Get.to(const BottomNav());
-          customSnackbar("Succfully", "Signup");
-        });
-      } catch (e) {
+    isLoading = true;
+    String noEamil = email.value.toString() + "@gmail.com";
+    print("===login email====>>$noEamil");
+
+    try {
+      await _auth
+          .signInWithEmailAndPassword(email: noEamil, password: pass.toString())
+          .then((value) {
+        SessionController().userId = value.user!.uid.toString();
+
         isLoading = false;
-        customSnackbar("Sorry", "Email or Password is wrong");
-      }
-    } else {
-      customSnackbar("Server error", "Email or Password is wrong");
+        Get.to(const BottomNav());
+        customSnackbar("Succfully", "Signup");
+      });
+    } catch (e) {
+      isLoading = false;
+      customSnackbar("Sorry", "Email or Password is wrong");
     }
   }
 

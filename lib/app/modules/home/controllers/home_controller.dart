@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:get/get.dart';
 
+import '../../../../singaltonClass.dart';
 import '../../login/views/login_view.dart';
 import '../../signup/views/signup_view.dart';
 import '../views/home_view.dart';
@@ -27,12 +28,15 @@ class HomeController extends GetxController {
     HomeView(),
     LoginView(),
     SignupView(),
+    HomeView(),
   ];
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   void signOut() {
     try {
       _auth.signOut().then((value) {
+        SessionController().userId = "";
+
         Get.toNamed(Routes.LOGIN);
         customSuccessSnackbar("Logout", "Succfully Logout");
       });
@@ -59,12 +63,5 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-  }
-
-//add category
-
-  void addCategory() {
-
-    
   }
 }
