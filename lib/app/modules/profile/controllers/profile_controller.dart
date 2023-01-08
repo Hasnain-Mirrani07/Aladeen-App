@@ -37,7 +37,7 @@ class ProfileController extends GetxController {
   void increment() => count.value++;
 
   XFile? imagef;
-  void imgFromCamera() async {
+  Future imgFromCamera(BuildContext context) async {
     final picker = ImagePicker();
     final image = await picker.pickImage(source: ImageSource.camera);
     if (imagef != null) {
@@ -49,8 +49,8 @@ class ProfileController extends GetxController {
     }
   }
 
-  //--------------------------------------------------------------
-  void imgFromGallery() async {
+  //------------------  --------------------------------------------
+  Future imgFromGallery(BuildContext context) async {
     final picker = ImagePicker();
     final image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -190,7 +190,7 @@ class ProfileController extends GetxController {
   GestureDetector _galleryBtn(context) {
     return GestureDetector(
       onTap: () {
-        imgFromGallery();
+        imgFromGallery(context);
         update();
         //_uploadFile();
         Navigator.pop(context);
@@ -219,7 +219,7 @@ class ProfileController extends GetxController {
   GestureDetector _cameraPickerBtn(context) {
     return GestureDetector(
       onTap: () {
-        imgFromCamera();
+        imgFromCamera(context);
 
         Navigator.pop(context);
         update();
@@ -270,7 +270,7 @@ class ProfileController extends GetxController {
         print("Data in category=> $newurl");
         dataref
             .child(SessionController().userId.toString())
-            .update({"profilePic": newurl})
+            .update({"profilePic": newurl.toString()})
             .then((value) => customSnackbar("profile updated", "Successfully"))
             .onError((error, stackTrace) =>
                 customSnackbar("Sorry", "profile not updated"));
