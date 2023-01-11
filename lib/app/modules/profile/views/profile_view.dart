@@ -1,12 +1,8 @@
 import 'dart:io';
-import 'dart:ui';
 
-import 'package:botim_app/app/modules/signup/controllers/signup_controller.dart';
 import 'package:botim_app/singaltonClass.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
@@ -35,7 +31,7 @@ class ProfileView extends GetView<ProfileController> {
               stream: ref.child(SessionController().userId.toString()).onValue,
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   Map<dynamic, dynamic> map = snapshot.data!.snapshot.value;
                   return Column(
@@ -61,7 +57,7 @@ class ProfileView extends GetView<ProfileController> {
                                       borderRadius: BorderRadius.circular(100),
                                       child: controllerP.imagef == null
                                           ? map['profilePic'].toString() == " "
-                                              ? Icon(Icons.person)
+                                              ? const Icon(Icons.person)
                                               : Image(
                                                   fit: BoxFit.cover,
                                                   image: NetworkImage(
@@ -87,7 +83,7 @@ class ProfileView extends GetView<ProfileController> {
                                     print("button");
                                     controllerP.showImagePickerSheet(context);
                                   },
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.add_a_photo,
                                   ),
                                 ),
@@ -104,13 +100,13 @@ class ProfileView extends GetView<ProfileController> {
                             );
                           },
                           child: ReuseRow(
-                              leading: Icon(Icons.person),
+                              leading: const Icon(Icons.person),
                               title: "User Name",
                               trailing: map['userName']),
                         ),
                       ),
                       ReuseRow(
-                          leading: Icon(Icons.phone),
+                          leading: const Icon(Icons.phone),
                           title: "User Name",
                           trailing: map['mobileNo']),
                     ],
@@ -118,7 +114,7 @@ class ProfileView extends GetView<ProfileController> {
                 }
               },
             ),
-          )
+          ),
         ],
       ),
     );
@@ -126,7 +122,7 @@ class ProfileView extends GetView<ProfileController> {
 }
 
 class ReuseRow extends StatelessWidget {
-  ReuseRow(
+  const ReuseRow(
       {super.key,
       required this.leading,
       required this.title,
