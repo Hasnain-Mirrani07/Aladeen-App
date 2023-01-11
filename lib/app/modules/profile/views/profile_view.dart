@@ -59,7 +59,7 @@ class ProfileView extends GetView<ProfileController> {
                                     ),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child: controller.imagef == null
+                                      child: controllerP.imagef == null
                                           ? map['profilePic'].toString() == " "
                                               ? Icon(Icons.person)
                                               : Image(
@@ -69,7 +69,7 @@ class ProfileView extends GetView<ProfileController> {
                                                           .toString()),
                                                 )
                                           : Image.file(
-                                              File(controller.imagef!.path)
+                                              File(controllerP.imagef!.path)
                                                   .absolute,
                                               fit: BoxFit.cover,
                                             ),
@@ -94,10 +94,21 @@ class ProfileView extends GetView<ProfileController> {
                               )),
                         ],
                       )),
-                      ReuseRow(
-                          leading: Icon(Icons.person),
-                          title: "User Name",
-                          trailing: map['userName']),
+                      GetBuilder(
+                        init: ProfileController(),
+                        builder: (controllerp) => GestureDetector(
+                          onTap: () {
+                            controllerp.cstmshowDialog(
+                              map['uid'].toString(),
+                              map['userName'].toString(),
+                            );
+                          },
+                          child: ReuseRow(
+                              leading: Icon(Icons.person),
+                              title: "User Name",
+                              trailing: map['userName']),
+                        ),
+                      ),
                       ReuseRow(
                           leading: Icon(Icons.phone),
                           title: "User Name",
