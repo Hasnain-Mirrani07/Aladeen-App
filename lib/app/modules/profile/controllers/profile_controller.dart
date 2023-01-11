@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'package:botim_app/shared/widgets/cstm_text_field.dart';
+import 'package:botim_app/shared/widgets/custom_button.dart';
 import 'package:botim_app/singaltonClass.dart';
+import 'package:botim_app/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -284,5 +287,45 @@ class ProfileController extends GetxController {
     } catch (e) {
       return customSnackbar("try catch", "$e");
     }
+  }
+
+  void cstmshowDialog(var id, String title) {
+    Get.defaultDialog(
+        title: "Edit your Name ",
+        content: Column(children: [
+          CstmTextFieldTemplate(
+            labelText: title.toString(),
+            onChanged: (vlaue) {
+              title = vlaue;
+            },
+            validator: (p0) {
+              Text("Required");
+            },
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CustomButton(
+            title: "Submit",
+            onPressed: () {
+              final DatabaseReference ataref =
+                  FirebaseDatabase.instance.ref("userData");
+              final uid = SessionController().userId.toString();
+              print("$title =$uid= $id");
+
+              dataref
+                  .child(SessionController().userId.toString())
+                  .update({"userName": title.toString()})
+                  .then((value) =>
+                      customSnackbar("profile updated", "Successfully"))
+                  .onError((error, stackTrace) =>
+                      customSnackbar("Sorry", "profile not updated"));
+            },
+          )
+        ]),
+        backgroundColor: whiteColor,
+        titleStyle: TextStyle(color: Colors.white),
+        middleTextStyle: TextStyle(color: Colors.white),
+        radius: 30);
   }
 }
