@@ -29,8 +29,7 @@ class _TextScreenState extends State<TestScreen> {
               child: const Text(
                   "containercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainer 2"),
             ),
-            const Text(
-                "containercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainer 2"),
+               "containercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainer 2"),
             const Text(
                 "containercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainer 2"),
           ]),
