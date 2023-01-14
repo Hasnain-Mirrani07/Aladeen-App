@@ -26,10 +26,10 @@ class _TextScreenState extends State<TestScreen> {
               // height: 100,
               // width: 100,
               color: Colors.yellow,
-              child: const Text("flfdkjgl;dsfjglkjd 2"),
+              child: const Text("flfdkjgl;dsfjgl;k;kkl;kjd 2"),
             ),
             const Text(
-                "container,knjkkhkjhkhcontainercontainerine;m;;lk;kntainercontainercontainercontainercontainercontainercontainercontainercontainercontainercontainer 2"),
+                "container,knjkkhkjhkhcontainercontainerine;ntainercontainercontainercontainercontainercontainercontainercontainercontainercontainer 2"),
           ]),
           Container(
             height: 500,
