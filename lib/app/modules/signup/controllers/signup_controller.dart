@@ -20,6 +20,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 class SignupController extends GetxController {
   final DatabaseReference databaseRef =
       FirebaseDatabase.instance.ref().child("userData");
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   firebase_storage.FirebaseStorage firebaseStorage =
       firebase_storage.FirebaseStorage.instance;
@@ -56,26 +57,12 @@ class SignupController extends GetxController {
   ]);
   var outlineInputBorder =
       OutlineInputBorder(borderSide: BorderSide(width: 1.w, color: greyColor));
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   verifyNo() async {
     print("===>>>Verify Mobile No");
 
     isLoading = true.obs;
-    String noWithCode = "+92" + phoneNoController.text.toString();
+    String noWithCode = "+92${phoneNoController.text}";
     // print("No==>>>${noWithCode}");
     // print("noEmail==${pass.value}");
     _auth.verifyPhoneNumber(
@@ -99,7 +86,7 @@ class SignupController extends GetxController {
   void creatAccount() async {
     isloading.value = true;
     try {
-      String noEamil = phoneNoController.text.toString() + "@gmail.com";
+      String noEamil = "${phoneNoController.text}@gmail.com";
       // print("noEmail=======>>>$noEamil");
       // print("noEmail==${pass.value}=====>>>${email.value}");
       await _auth
@@ -189,7 +176,7 @@ class SignupController extends GetxController {
 //----img picker
   Widget addImgBtn(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       padding: EdgeInsets.only(
         left: 4.w,
         right: 5.w,
@@ -208,9 +195,9 @@ class SignupController extends GetxController {
             child: Container(
               height: 77.h,
               width: 80.w,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.lightBlue, shape: BoxShape.circle),
-              child: Icon(
+              child: const Icon(
                 Icons.camera_alt_outlined,
                 size: 21,
               ),
