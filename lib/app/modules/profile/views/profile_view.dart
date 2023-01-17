@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:botim_app/singaltonClass.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,10 @@ import '../controllers/profile_controller.dart';
 class ProfileView extends GetView<ProfileController> {
   ProfileView({Key? key}) : super(key: key);
   final DatabaseReference ref = FirebaseDatabase.instance.ref("userData");
+  final firestore = FirebaseFirestore.instance
+      .collection("user")
+      .doc(SessionController().userId.toString())
+      .snapshots();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,12 +33,12 @@ class ProfileView extends GetView<ProfileController> {
           ),
           Expanded(
             child: StreamBuilder(
-              stream: ref.child(SessionController().userId.toString()).onValue,
+              stream: firestore,
               builder: (context, AsyncSnapshot snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  Map<dynamic, dynamic> map = snapshot.data!.snapshot.value;
+                  //   Map<dynamic, dynamic> map = snapshot.data!.snapshot.value;
                   return Column(
                     children: [
                       Center(
@@ -56,13 +61,15 @@ class ProfileView extends GetView<ProfileController> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
                                       child: controllerP.imagef == null
-                                          ? map['profilePic'].toString() == " "
+                                          ? snapshot.data['profilePic']
+                                                      .toString() ==
+                                                  " "
                                               ? const Icon(Icons.person)
                                               : Image(
                                                   fit: BoxFit.cover,
-                                                  image: NetworkImage(
-                                                      map['profilePic']
-                                                          .toString()),
+                                                  image: NetworkImage(snapshot
+                                                      .data['profilePic']
+                                                      .toString()),
                                                 )
                                           : Image.file(
                                               File(controllerP.imagef!.path)
@@ -95,20 +102,20 @@ class ProfileView extends GetView<ProfileController> {
                         builder: (controllerp) => GestureDetector(
                           onTap: () {
                             controllerp.cstmshowDialog(
-                              map['uid'].toString(),
-                              map['userName'].toString(),
+                              snapshot.data['uid'].toString(),
+                              snapshot.data['userName'].toString(),
                             );
                           },
                           child: ReuseRow(
                               leading: const Icon(Icons.person),
                               title: "User Name",
-                              trailing: map['userName']),
+                              trailing: snapshot.data['userName']),
                         ),
                       ),
                       ReuseRow(
                           leading: const Icon(Icons.phone),
                           title: "User Name",
-                          trailing: map['mobileNo']),
+                          trailing: snapshot.data['mobileNo']),
                     ],
                   );
                 }
