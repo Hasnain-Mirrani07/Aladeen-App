@@ -2,14 +2,12 @@ import 'dart:io';
 import 'package:botim_app/app/modules/signup/views/verify_email/verify_number.dart';
 import 'package:botim_app/app/routes/app_pages.dart';
 import 'package:botim_app/shared/widgets/custome_snackbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-import 'package:botim_app/utils/assets.dart';
 import 'package:botim_app/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -20,7 +18,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 class SignupController extends GetxController {
   final DatabaseReference databaseRef =
       FirebaseDatabase.instance.ref().child("userData");
-
+  final firestore = FirebaseFirestore.instance.collection("user");
   final FirebaseAuth _auth = FirebaseAuth.instance;
   firebase_storage.FirebaseStorage firebaseStorage =
       firebase_storage.FirebaseStorage.instance;
@@ -101,20 +99,21 @@ class SignupController extends GetxController {
         print("$name = $no $userEmail = $uid  ");
 
 //----Image upload-----
-        // firebase_storage.Reference ref =
-        //     firebase_storage.FirebaseStorage.instance.ref('/foldername' + uid);
-        // firebase_storage.UploadTask uploadTask = ref.putFile(imagef!.absolute);
-        // await Future.value(uploadTask).then((value) async {
-        //   imgurl = await ref.getDownloadURL();
-        // });
+        firebase_storage.Reference ref =
+            firebase_storage.FirebaseStorage.instance.ref('/foldername$uid');
+        firebase_storage.UploadTask uploadTask = ref.putFile(imagef!.absolute);
+        await Future.value(uploadTask).then((value) async {
+          imgurl = await ref.getDownloadURL();
+        });
 
 //----All Data Added to Database----
-        databaseRef.child(value.user!.uid.toString()).set({
+
+        firestore.doc(value.user!.uid.toString()).set({
           "uid": value.user!.uid.toString(),
           "userName": name.toString(),
           "userEmail": value.user!.email.toString(),
           "mobileNo": phoneNoController.text.toString(),
-          "profilePic": "imgurl",
+          "profilePic": imgurl,
           "online": "false"
         }).then((value) {
           isLoading.value = false;

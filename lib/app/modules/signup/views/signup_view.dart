@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:botim_app/app/modules/signup/views/alreadyaccount.dart';
 import 'package:botim_app/app/modules/signup/views/or_login_with.dart';
 import 'package:botim_app/app/modules/signup/views/social_account_row.dart';
@@ -109,7 +107,7 @@ class SignupView extends GetView<SignupController> {
                                                 onTap: () {
                                                   controller.cancelImg();
                                                 },
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.close,
                                                   color: Colors.red,
                                                   size: 20,
@@ -186,19 +184,20 @@ class SignupView extends GetView<SignupController> {
                         SizedBox(
                           height: 15.h,
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 24.w),
-                          child: CstmTextFieldTemplate(
-                            validator: controller.passwordValidator,
-                            hintText: 'Confirm password',
-                            labelText: 'Confirm password',
-                            isPassword: true,
-                            onTap: () => controller.ishideConf(),
-                            showpass: controller.showpassConf.value,
-                            keyboardType: TextInputType.text,
-                            hideText: controller.showpassConf.value,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        //   child: CstmTextFieldTemplate(
+                        //     validator: controller.passwordValidator,
+                        //     hintText: 'Confirm password',
+                        //     labelText: 'Confirm password',
+                        //     isPassword: true,
+                        //     onTap: () => controller.ishideConf(),
+                        //     showpass: controller.showpassConf.value,
+                        //     keyboardType: TextInputType.text,
+                        //     hideText: controller.showpassConf.value,
+                        //   ),
+                        // ),
+
                         SizedBox(
                           height: 15.h,
                         ),

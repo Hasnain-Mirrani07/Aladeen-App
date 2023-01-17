@@ -3,6 +3,7 @@ import 'package:botim_app/shared/widgets/cstm_text_field.dart';
 import 'package:botim_app/shared/widgets/custom_button.dart';
 import 'package:botim_app/singaltonClass.dart';
 import 'package:botim_app/utils/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -16,26 +17,13 @@ class ProfileController extends GetxController {
   //TODO: Implement ProfileController
   final DatabaseReference dataref = FirebaseDatabase.instance.ref("userData");
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final firestore = FirebaseFirestore.instance.collection("user");
   firebase_storage.FirebaseStorage firebaseStorage =
       firebase_storage.FirebaseStorage.instance;
 
   final count = 0.obs;
 
   get lightBluishColor => null;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   void increment() => count.value++;
 
@@ -72,7 +60,7 @@ class ProfileController extends GetxController {
 //----img picker
   Widget addImgBtn(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       padding: EdgeInsets.only(
         left: 4.w,
         right: 5.w,
@@ -92,9 +80,9 @@ class ProfileController extends GetxController {
             child: Container(
               height: 77.h,
               width: 80.w,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.lightBlue, shape: BoxShape.circle),
-              child: Icon(
+              child: const Icon(
                 Icons.camera_alt_outlined,
                 size: 21,
               ),
@@ -271,8 +259,8 @@ class ProfileController extends GetxController {
       await Future.value(uploadTask).then((value) async {
         var newurl = await storageRef.getDownloadURL();
         print("Data in category=> $newurl");
-        dataref
-            .child(SessionController().userId.toString())
+        firestore
+            .doc(SessionController().userId.toString())
             .update({"profilePic": newurl.toString()})
             .then((value) => customSnackbar("profile updated", "Successfully"))
             .onError((error, stackTrace) =>
@@ -299,10 +287,11 @@ class ProfileController extends GetxController {
               title = vlaue;
             },
             validator: (p0) {
-              Text("Required");
+              const Text("Required");
+              return null;
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           CustomButton(
@@ -324,8 +313,8 @@ class ProfileController extends GetxController {
           )
         ]),
         backgroundColor: whiteColor,
-        titleStyle: TextStyle(color: Colors.white),
-        middleTextStyle: TextStyle(color: Colors.white),
+        titleStyle: const TextStyle(color: Colors.white),
+        middleTextStyle: const TextStyle(color: Colors.white),
         radius: 30);
   }
 }
