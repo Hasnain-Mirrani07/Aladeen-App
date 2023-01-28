@@ -67,7 +67,7 @@ class SignupController extends GetxController {
       phoneNumber: noWithCode,
       verificationCompleted: (_) {},
       verificationFailed: (error) {
-        customSnackbar("$error", "Verify error");
+        customSnackbar("$error", "Veriffy error");
       },
       codeSent: (verificationId, forceResendingToken) {
         Get.to(VerifyNumberScreen(
@@ -85,8 +85,6 @@ class SignupController extends GetxController {
     isloading.value = true;
     try {
       String noEamil = "${phoneNoController.text}@gmail.com";
-      // print("noEmail=======>>>$noEamil");
-      // print("noEmail==${pass.value}=====>>>${email.value}");
       await _auth
           .createUserWithEmailAndPassword(
               email: noEamil, password: pass.toString())
