@@ -18,7 +18,7 @@ void main() async {
       designSize: const Size(375, 812),
       builder: (context, child) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "Appliication",
+        title: "Application",
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
       ),

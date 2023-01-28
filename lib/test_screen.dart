@@ -45,7 +45,7 @@ class _TextScreenState extends State<TestScreen> {
               TextFormField(
                 controller: searchController,
                 decoration: const InputDecoration(
-                  hintText: "Search user",
+                  hintText: "Search usser",
                 ),
               ),
               ElevatedButton(
