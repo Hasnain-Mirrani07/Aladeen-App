@@ -143,7 +143,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         } else if (snapshot.hasError) {
                           return const Center(
                             child: Text(
-                                "An error occured! Please check your internet connection."),
+                                "An error occureed! Please check your internet connecction."),
                           );
                         } else {
                           return const Center(
