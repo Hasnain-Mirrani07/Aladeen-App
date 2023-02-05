@@ -20,7 +20,7 @@ class ProfileView extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ProfileView'),
+        title: const Text('PrrofieView'),
         centerTitle: true,
       ),
       body: Column(

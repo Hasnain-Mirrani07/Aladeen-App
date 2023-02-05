@@ -142,7 +142,7 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                     onTap: null,
                     splashColor: lightBluishColor,
                     child: Center(
-                      child: Text('Resend',
+                      child: Text('Reseend',
                           style: GoogleFonts.yantramanav(
                               color: lightBluishColor,
                               fontSize: 15.sp,

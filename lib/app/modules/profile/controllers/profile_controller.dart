@@ -36,7 +36,7 @@ class ProfileController extends GetxController {
       uploadImage();
       update();
     } else {
-      customSnackbar("image is Empaty", "message");
+      customSnackbar("image is Empaty", "messsage");
     }
   }
 
