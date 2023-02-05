@@ -253,7 +253,7 @@ class SignupView extends GetView<SignupController> {
 
                         BlueBtn(
                             isLoading: controller.isLoading.value,
-                            title: 'Siggn up',
+                            title: 'Sign up',
                             color: lightBluishColor,
                             onPressed: () {
                               if (_formKeySignup.currentState!.validate()) {

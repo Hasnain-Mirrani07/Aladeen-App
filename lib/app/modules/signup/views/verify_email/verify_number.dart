@@ -39,7 +39,7 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
   var otp;
   @override
   Widget build(BuildContext context) {
-    final _controller = Get.find<SignupController>();
+    final controller = Get.find<SignupController>();
     //var size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -142,7 +142,7 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                     onTap: null,
                     splashColor: lightBluishColor,
                     child: Center(
-                      child: Text('Reseend',
+                      child: Text('Resend',
                           style: GoogleFonts.yantramanav(
                               color: lightBluishColor,
                               fontSize: 15.sp,
@@ -158,15 +158,14 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                       title: 'verify',
                       onPressed: () async {
                         print("otp ==>>$otp");
-                   
-                   
+
                         final credential = PhoneAuthProvider.credential(
                             verificationId: widget.verificationId.toString(),
                             smsCode: otp.toString());
                         try {
                           await _auth.signInWithCredential(credential);
 
-                          _controller.creatAccount();
+                          controller.creatAccount();
                         } catch (e) {
                           customSnackbar(
                               "Verification Code Error", "Please Try Again");
